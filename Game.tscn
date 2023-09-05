@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://b6e1t8icmsrxa"]
+
+[ext_resource type="Script" path="res://Game.cs" id="1_rhiei"]
+[ext_resource type="PackedScene" uid="uid://bj2kyy6wmnp6" path="res://Player.tscn" id="2_cgmn4"]
+[ext_resource type="PackedScene" uid="uid://di7vkmehfyw3x" path="res://code/enemies/Enemy.tscn" id="2_osx6v"]
+[ext_resource type="PackedScene" uid="uid://fh0p1vlnghx" path="res://Attacks.tscn" id="4_ee22p"]
+
+[sub_resource type="Curve2D" id="Curve2D_213ei"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1152, 0, 0, 0, 0, 0, 1152, 648, 0, 0, 0, 0, 0, 648, 0, 0, 0, 0, 0, 0)
+}
+point_count = 5
+
+[node name="Node" type="Node"]
+script = ExtResource("1_rhiei")
+MobScene = ExtResource("2_osx6v")
+
+[node name="StartTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="playerSpawn" type="Marker2D" parent="."]
+position = Vector2(400, 400)
+
+[node name="spawnBorder" type="Path2D" parent="."]
+curve = SubResource("Curve2D_213ei")
+
+[node name="slimeSpawn" type="PathFollow2D" parent="spawnBorder"]
+scale = Vector2(1.15258, 1.07799)
+
+[node name="player" parent="." instance=ExtResource("2_cgmn4")]
+position = Vector2(618, 229)
+
+[node name="Attacks" parent="." instance=ExtResource("4_ee22p")]
+
+[node name="Gibs" type="Node2D" parent="."]
+
+[connection signal="Hit" from="player" to="." method="GameOver"]

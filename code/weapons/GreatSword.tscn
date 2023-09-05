@@ -1,0 +1,82 @@
+[gd_scene load_steps=6 format=3 uid="uid://llb75pom0d4e"]
+
+[ext_resource type="Script" path="res://code/weapons/GreatSword.cs" id="1_io1bt"]
+[ext_resource type="Texture2D" uid="uid://cye8yet8thj3c" path="res://resources/weapons/greatSword2.png" id="2_hkq0r"]
+
+[sub_resource type="Animation" id="Animation_e5w6d"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GreatSword:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(2.24449, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_8fsks"]
+resource_name = "slash"
+length = 0.6
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GreatSword:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.200053, 0.6),
+"transitions": PackedFloat32Array(2.37841, 1, 1),
+"update": 0,
+"values": [2.22615, 5.71595, 5.71595]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.164279, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"MakeSlice"
+}, {
+"args": [],
+"method": &"AttackOver"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_46yrh"]
+_data = {
+"RESET": SubResource("Animation_e5w6d"),
+"slash": SubResource("Animation_8fsks")
+}
+
+[node name="Sword" type="Node2D"]
+rotation = 5.56245e-05
+script = ExtResource("1_io1bt")
+
+[node name="GreatSword" type="Sprite2D" parent="."]
+position = Vector2(0.106873, 0.071682)
+rotation = 2.24449
+texture = ExtResource("2_hkq0r")
+offset = Vector2(-69.2962, 61.3759)
+
+[node name="SwordHitbox" type="Area2D" parent="GreatSword"]
+position = Vector2(0.00886653, 0.12838)
+rotation = -2.23056
+
+[node name="SwordHitboxPoly" type="CollisionPolygon2D" parent="GreatSword/SwordHitbox"]
+position = Vector2(182.555, -162.3)
+polygon = PackedVector2Array(-198, -60, -201, 122, -154, 129, -151, -13, -168, -42)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_process_mode = 0
+libraries = {
+"": SubResource("AnimationLibrary_46yrh")
+}

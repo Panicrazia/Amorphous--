@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://ciloqyoh17h5i"]
+
+[ext_resource type="Shader" path="res://shaders/slimeTest3.gdshader" id="1_nnmct"]
+
+[resource]
+shader = ExtResource("1_nnmct")

@@ -1,0 +1,27 @@
+[gd_scene load_steps=7 format=3 uid="uid://cf1i1liqmttpr"]
+
+[ext_resource type="Shader" path="res://shaders/slimeTest3.gdshader" id="1_w1rpi"]
+[ext_resource type="Texture2D" uid="uid://cdjhcii6q2bu4" path="res://icon.svg" id="2_qp5vq"]
+[ext_resource type="Shader" path="res://shaders/slimeTest.gdshader" id="3_l5oit"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bnvuw"]
+shader = ExtResource("1_w1rpi")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_grh3u"]
+shader = ExtResource("3_l5oit")
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_p8c5b"]
+
+[node name="ShaderTest" type="Node2D"]
+
+[node name="Icon" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_bnvuw")
+position = Vector2(104, 104)
+texture = ExtResource("2_qp5vq")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+material = SubResource("ShaderMaterial_grh3u")
+position = Vector2(-16, 136)
+color = Color(1, 0.847059, 1, 1)
+texture = SubResource("CanvasTexture_p8c5b")
+polygon = PackedVector2Array(-240, -232, -648, -184, -624, 400, 960, 560, 1200, 472, 1008, -152)

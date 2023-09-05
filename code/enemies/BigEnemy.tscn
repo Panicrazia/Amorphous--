@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1ljrx2ycnge"]
+
+[ext_resource type="Script" path="res://code/enemies/BigEnemy.cs" id="1_0h640"]
+[ext_resource type="Texture2D" uid="uid://ev6tlc4nj4pi" path="res://resources/enemies/base slime.png" id="1_b746o"]
+[ext_resource type="PackedScene" uid="uid://mf872gwan3wc" path="res://code/enemies/SlimeCore.tscn" id="3_68ay1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eq2ok"]
+radius = 45.0
+
+[node name="BigEnemy" type="CharacterBody2D"]
+collision_layer = 3
+collision_mask = 82
+motion_mode = 1
+safe_margin = 0.5
+script = ExtResource("1_0h640")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.792, 1.792)
+texture = ExtResource("1_b746o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_eq2ok")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(0.5, 0)
+rect = Rect2(-50, -50, 100, 100)
+
+[node name="SlimeCore" parent="." instance=ExtResource("3_68ay1")]
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnVisibleOnScreenNotifier2DScreenExited"]

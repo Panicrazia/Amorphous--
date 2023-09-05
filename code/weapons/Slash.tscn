@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=3 uid="uid://buaujkaiybshi"]
+
+[ext_resource type="Script" path="res://code/weapons/Slash.cs" id="1_1xn75"]
+[ext_resource type="Texture2D" uid="uid://dqb1wbbawgk1a" path="res://resources/weapons/greatSwordSwipe.png" id="1_us74w"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tw372"]
+radius = 275.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jrroq"]
+radius = 90.0
+
+[node name="Slash" type="Node2D"]
+rotation = -2.09439
+script = ExtResource("1_1xn75")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 40
+
+[node name="ComplexSwipe" type="CollisionPolygon2D" parent="Area2D"]
+visible = false
+polygon = PackedVector2Array(0, -275, 71.0792, -265.588, 138, -238, 195, -194, 238, -138, 266, -71, 275, 0, 266, 71, 238, 138, 78, 45, 87, 24, 90, 0, 87, -24, 79, -44, 64, -64, 45, -78, 25.837, -85.7523, 0, -90)
+disabled = true
+
+[node name="OuterCircle" type="CollisionShape2D" parent="Area2D"]
+visible = false
+shape = SubResource("CircleShape2D_tw372")
+disabled = true
+
+[node name="InnerCircle" type="CollisionShape2D" parent="Area2D"]
+visible = false
+shape = SubResource("CircleShape2D_jrroq")
+disabled = true
+debug_color = Color(0.913725, 0.270588, 0.294118, 0.419608)
+
+[node name="SimpleSwipe" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(0, -275, 71, -266, 138, -238, 195, -195, 238, -138, 266, -71, 275, 0, 266, 71, 238, 138, 78, 46, 0, -90)
+
+[node name="Polygon2D" type="Polygon2D" parent="Area2D"]
+color = Color(0.952941, 0.521569, 0.717647, 0.313726)
+polygon = PackedVector2Array(0, -275, 71, -266, 138, -238, 195, -195, 238, -138, 266, -71, 275, 0, 266, 71, 238, 138, 78, 46, 0, -90)
+
+[node name="GreatSwordSwipe" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -1)
+rotation = -0.285543
+scale = Vector2(0.799775, 0.799775)
+texture = ExtResource("1_us74w")
+offset = Vector2(182.5, -21.525)
+
+[node name="DDayClock" type="Timer" parent="."]
+process_callback = 0
+wait_time = 0.4
+autostart = true
+
+[connection signal="body_entered" from="Area2D" to="." method="Hit"]
+[connection signal="timeout" from="DDayClock" to="." method="Eliminate"]
