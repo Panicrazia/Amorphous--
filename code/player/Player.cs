@@ -1,14 +1,37 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Security.Principal;
+using System.Xml.Linq;
 
-public partial class Player : Area2D
+public partial class Player : Area2D, IStatusAffected
 {
 	[Signal]
 	public delegate void HitEventHandler();
-	
-	public int Speed { get; set; } = 400; // How fast the player will move (pixels/sec).
+    //public float MaxSpeed { get; set; }
 
-	public Vector2 ScreenSize; // Size of the game window.
+    private float _MaxSpeed = 300f;
+    public float MaxSpeed
+    {
+        get
+        {
+            if (_statuses.ContainsKey(StatusEnum.StickyGoo))
+            {
+                return _MaxSpeed * .4f;
+            }
+            else
+            {
+                return _MaxSpeed;
+            }
+            
+        }
+        set => _MaxSpeed = value;
+    }
+
+    private Dictionary<StatusEnum, int> _statuses = new Dictionary<StatusEnum, int>();
+    public IDictionary<StatusEnum, int> statuses { get => _statuses; set => _statuses = (Dictionary<StatusEnum, int>)value; } 
+
+    public Vector2 ScreenSize; // Size of the game window.
 
 	public bool isAttacking = false;
 	
@@ -17,6 +40,7 @@ public partial class Player : Area2D
 	{
 		ScreenSize = GetViewportRect().Size;
         Engine.RegisterSingleton("Player1", this);
+        MaxSpeed = 300f;
 	}
 
     public override void _Process(double delta)
@@ -30,8 +54,9 @@ public partial class Player : Area2D
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _PhysicsProcess(double delta)
-	{
-		if (!isAttacking)
+    {
+        ((IStatusAffected)this).DecrementStatusDuration();
+        if (!isAttacking)
         {
             LookAt(GetGlobalMousePosition());
 
@@ -65,7 +90,7 @@ public partial class Player : Area2D
 
             if (velocity.Length() > 0)
             {
-                velocity = velocity.Normalized() * Speed;
+                velocity = velocity.Normalized() * MaxSpeed;
             }
             else
             {
@@ -79,9 +104,14 @@ public partial class Player : Area2D
         }
 	}
 
-	public void Attack()
-	{
-		GetWeapon().Attack();
+    public void Attack()
+    {
+        /* 
+        foreach(var stat in statuses)
+        {
+            GD.Print(stat);
+        }*/
+        GetWeapon().Attack();
         isAttacking = true;
 	}
 

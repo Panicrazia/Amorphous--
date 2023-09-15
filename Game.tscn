@@ -1,15 +1,24 @@
-[gd_scene load_steps=6 format=3 uid="uid://b6e1t8icmsrxa"]
+[gd_scene load_steps=11 format=3 uid="uid://b6e1t8icmsrxa"]
 
 [ext_resource type="Script" path="res://Game.cs" id="1_rhiei"]
-[ext_resource type="PackedScene" uid="uid://bj2kyy6wmnp6" path="res://Player.tscn" id="2_cgmn4"]
-[ext_resource type="PackedScene" uid="uid://di7vkmehfyw3x" path="res://code/enemies/Enemy.tscn" id="2_osx6v"]
+[ext_resource type="PackedScene" uid="uid://coik0ths3u3nh" path="res://code/enemies/Enemy.tscn" id="2_osx6v"]
+[ext_resource type="Script" path="res://SpawnPoint.cs" id="3_y6c12"]
 [ext_resource type="PackedScene" uid="uid://fh0p1vlnghx" path="res://Attacks.tscn" id="4_ee22p"]
+[ext_resource type="PackedScene" uid="uid://c5jw8f055rxvu" path="res://code/player/Player.tscn" id="4_ho406"]
+[ext_resource type="Script" path="res://code/biomes/biome2.cs" id="6_login"]
+[ext_resource type="Script" path="res://code/biomes/biome1.cs" id="7_g58xr"]
 
 [sub_resource type="Curve2D" id="Curve2D_213ei"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1152, 0, 0, 0, 0, 0, 1152, 648, 0, 0, 0, 0, 0, 648, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, -24, -24, 0, 0, 0, 0, 1176, -24, 0, 0, 0, 0, 1176, 664, 0, 0, 0, 0, -24, 664, 0, 0, 0, 0, -24, -24)
 }
 point_count = 5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ldqp"]
+size = Vector2(616, 736)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mqchr"]
+size = Vector2(632, 736)
 
 [node name="Node" type="Node"]
 script = ExtResource("1_rhiei")
@@ -25,13 +34,39 @@ position = Vector2(400, 400)
 curve = SubResource("Curve2D_213ei")
 
 [node name="slimeSpawn" type="PathFollow2D" parent="spawnBorder"]
+position = Vector2(-24, -24)
 scale = Vector2(1.15258, 1.07799)
 
-[node name="player" parent="." instance=ExtResource("2_cgmn4")]
-position = Vector2(618, 229)
+[node name="SpawnPoint" type="Marker2D" parent="spawnBorder/slimeSpawn"]
+unique_name_in_owner = true
+script = ExtResource("3_y6c12")
+
+[node name="Player" parent="." instance=ExtResource("4_ho406")]
+z_index = 10
+position = Vector2(600, 248)
 
 [node name="Attacks" parent="." instance=ExtResource("4_ee22p")]
 
 [node name="Gibs" type="Node2D" parent="."]
 
-[connection signal="Hit" from="player" to="." method="GameOver"]
+[node name="Map" type="Node2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="Map"]
+modulate = Color(1, 0.196078, 1, 1)
+collision_layer = 32768
+collision_mask = 0
+script = ExtResource("6_login")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Area2D"]
+position = Vector2(268, 328)
+shape = SubResource("RectangleShape2D_5ldqp")
+
+[node name="Area2D2" type="Area2D" parent="Map"]
+position = Vector2(23, 0)
+collision_layer = 32768
+collision_mask = 0
+script = ExtResource("7_g58xr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Area2D2"]
+position = Vector2(869, 328)
+shape = SubResource("RectangleShape2D_mqchr")

@@ -28,26 +28,27 @@ public partial class Game : Node
 		// keyword. However, var is acceptable to use here because the types are
 		// obviously Mob and PathFollow2D, since they appear later on the line.
 
-		// Create a new instance of the Mob scene.
-		Enemy mob = MobScene.Instantiate<Enemy>();
 
-		// Choose a random location on Path2D.
 		var mobSpawnLocation = GetNode<PathFollow2D>("spawnBorder/slimeSpawn");
 		mobSpawnLocation.ProgressRatio = GD.Randf();
 
-		// Set the mob's direction perpendicular to the path direction.
-		float direction = mobSpawnLocation.Rotation + Mathf.Pi / 2;
+        Enemy mob = GetNode<SpawnPoint>("%SpawnPoint").TrySpawn().Instantiate<Enemy>();
+
+        //Enemy mob = MobScene.Instantiate<Enemy>();
+
+        // Set the mob's direction perpendicular to the path direction.
+        float direction = mobSpawnLocation.Rotation + Mathf.Pi / 2;
 
 		// Set the mob's position to a random location.
 		mob.Position = mobSpawnLocation.Position;
 
 		// Add some randomness to the direction.
-		direction += (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
+		direction += (float)GD.RandRange(-Mathf.Pi / 6, Mathf.Pi / 6);
 		mob.Rotation = direction;
 
         // Choose the velocity.
         //var velocity = new Vector2((float)GD.RandRange(75.0, 100.0), 0);
-        var velocity = new Vector2(Constants.greenSlimeMaxSpeed, 0);
+        var velocity = new Vector2(SlimeConstants.GreenSlimeMaxSpeed, 0);
 		mob.Velocity = velocity.Rotated(direction);
 
 		// Spawn the mob by adding it to the Main scene.
@@ -64,7 +65,7 @@ public partial class Game : Node
 	{
 		_score = 0;
 		GD.Print("start");
-		var player = GetNode<Player>("player");
+		var player = GetNode<Player>("Player");
 		var startPosition = GetNode<Marker2D>("playerSpawn");
 		player.Start(startPosition.Position);
 

@@ -12,4 +12,9 @@ public partial class SlimeCore : Area2D
 	public override void _Process(double delta)
 	{
 	}
+
+    public virtual void TakeDamage(float damage, Vector2 originPos)
+    {
+        (GetParent() as Enemy).TakeDamage(damage, originPos);
+    }
 }

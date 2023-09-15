@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4k28rxlafym4"]
+
+[ext_resource type="Script" path="res://code/gibsSlimeAndCorpses/YellowGoo.cs" id="1_h0ti5"]
+[ext_resource type="Texture2D" uid="uid://c75w64kv6dy8b" path="res://resources/gibs/YellowGooCover.png" id="2_fdycx"]
+
+[node name="YellowGoo" type="Node2D"]
+z_index = 1
+script = ExtResource("1_h0ti5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.898039, 0.909804, 0.215686, 0.627451)
+texture = ExtResource("2_fdycx")

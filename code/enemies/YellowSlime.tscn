@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://coik0ths3u3nh"]
+[gd_scene load_steps=5 format=3 uid="uid://caj681uvwuro1"]
 
-[ext_resource type="Script" path="res://code/enemies/Enemy.cs" id="1_bankf"]
-[ext_resource type="Texture2D" uid="uid://ev6tlc4nj4pi" path="res://resources/enemies/base slime.png" id="2_0hpry"]
-[ext_resource type="PackedScene" uid="uid://mf872gwan3wc" path="res://code/enemies/SlimeCore.tscn" id="3_hq6wj"]
+[ext_resource type="Script" path="res://code/enemies/YellowSlime.cs" id="1_rxetj"]
+[ext_resource type="Texture2D" uid="uid://bc885figrweat" path="res://resources/enemies/YellowSlime.png" id="2_hvmh4"]
+[ext_resource type="PackedScene" uid="uid://mf872gwan3wc" path="res://code/enemies/SlimeCore.tscn" id="3_477dc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eq2ok"]
 radius = 20.0
@@ -12,12 +12,12 @@ collision_mask = 67
 input_pickable = true
 motion_mode = 1
 safe_margin = 0.5
-script = ExtResource("1_bankf")
+script = ExtResource("1_rxetj")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.896, 0.896)
-texture = ExtResource("2_0hpry")
+texture = ExtResource("2_hvmh4")
 
 [node name="SlimeHitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_eq2ok")
@@ -25,7 +25,7 @@ shape = SubResource("CircleShape2D_eq2ok")
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 rect = Rect2(-25, -25, 50, 50)
 
-[node name="SlimeCore" parent="." instance=ExtResource("3_hq6wj")]
+[node name="SlimeCore" parent="." instance=ExtResource("3_477dc")]
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnVisibleOnScreenNotifier2DScreenExited"]

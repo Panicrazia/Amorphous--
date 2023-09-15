@@ -1,19 +1,41 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
-public partial class Enemy : CharacterBody2D
+public partial class Enemy : CharacterBody2D//, IStatusAffected
 {
     public float health = 1f;
     public bool isMerging = false;
     public Enemy merger = null;
     public Node2D target = null;
     public Vector2 targetPos = Vector2.Inf;
-    float maxSpeed = Constants.greenSlimeMaxSpeed;
-    PackedScene splatterScene = GD.Load<PackedScene>("res://code/gibsSlimeAndCorpses/splatter1.tscn");
+    public float maxSpeed;
+    /*
+    public float maxSpeed { 
+        get {
+            if (statuses.ContainsKey(StatusEnum.StickyGoo))
+            {
+                return maxSpeed * .4f;
+            }
+            else
+            {
+                return maxSpeed;
+            }
+        } set => maxSpeed = value; }
+    */
+    public Color gibColor = SlimeConstants.GreenSlimeColor;
+
+    public Dictionary<StatusEnum, int> statuses { get => statuses;  set => statuses = value; }
+
+    //public HashSet<StatusEnum> statuses => statuses;
+
+    //PackedScene splatterScene = GD.Load<PackedScene>("res://code/gibsSlimeAndCorpses/splatter1.tscn");
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
+        //statuses = new Dictionary<StatusEnum, int>();
+        maxSpeed = SlimeConstants.GreenSlimeMaxSpeed;
         health = 1f;
 	}
 
@@ -24,7 +46,6 @@ public partial class Enemy : CharacterBody2D
         {
             if (merger != null)
             {
-                
                 Vector2 distance = (merger.Position - this.Position);
                 targetPos = (distance * .5f) + Position;
                 if (distance.LengthSquared() < Math.Pow((GetNode<CollisionShape2D>("SlimeHitbox").Shape as CircleShape2D).Radius * .55, 2))
@@ -115,6 +136,9 @@ public partial class Enemy : CharacterBody2D
         // Must be deferred as we can't change physics properties on a physics callback.
         GetNode<CollisionShape2D>("SlimeHitbox").SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
         //GetNode<CollisionShape2D>("CenterHitbox").SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+
+        //probably change this so that things can still bounce and pop them, but they cannot merge with them
+        //(also gives possibilities for a special merger where one joins in two already merging)
     }
 
     public virtual void TakeDamage(float damage, Vector2 originPos)
@@ -128,16 +152,27 @@ public partial class Enemy : CharacterBody2D
 
     public virtual void Kill(Vector2 originPos)
     {
+        if (merger != null)
+        {
+            merger.ResetMergerInfo();
+        }
         QueueFree();
-        Splatter1 splatter = GibManager.getSplatter(this.Position, originPos.AngleToPoint(Position), Vector2.One * .67f);
-        AddSibling(splatter);
+        MakeSplatter(originPos, .67f);
+    }
+
+    public virtual Splatter1 MakeSplatter(Vector2 originPos, float scale) //used to return the splatter
+    {
+        Splatter1 splatter = GibManager.getSplatter(this.Position, originPos.AngleToPoint(Position), Vector2.One * scale, gibColor);
+        GetParent().CallDeferred(Node2D.MethodName.AddChild, splatter);
+        return splatter;
     }
 
     private void _on_mouse_entered()
-    {/*
+    {
+        /*
         GD.Print("=====");
         GD.Print(this.Velocity);
         GD.Print(this.Velocity.Length());
-    */
+        */
     }
 }

@@ -28,7 +28,7 @@ public partial class BigEnemy : Enemy
             //LookAt(target.Position);
             //Rotate( Position.AngleToPoint(target.Position) * .05f);
             //Position.AngleToPoint(target.Position)
-            Rotation = (float)Mathf.LerpAngle(Rotation, Position.AngleToPoint(target.Position), delta*.7);
+            Rotation = (float)Mathf.LerpAngle(Rotation, Position.AngleToPoint(target.Position), delta*1f);
             //GD.Print(Position.AngleToPoint(target.Position));
             Velocity = Vector2.FromAngle(Rotation) * Velocity.Length();
         }
@@ -53,11 +53,11 @@ public partial class BigEnemy : Enemy
 		Vector2 direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 		if (direction != Vector2.Zero)
 		{
-			velocity.X = direction.X * Speed;
+			velocity.X = direction.X * MaxSpeed;
 		}
 		else
 		{
-			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+			velocity.X = Mathf.MoveToward(Velocity.X, 0, MaxSpeed);
 		}
 
 		Velocity = velocity;
@@ -67,8 +67,7 @@ public partial class BigEnemy : Enemy
     public override void TakeDamage(float damage, Vector2 originPos)
     {
         base.TakeDamage(damage, originPos);
-        Splatter1 splatter = GibManager.getSplatter(this.Position, originPos.AngleToPoint(Position), Vector2.One * .67f);
-        AddSibling(splatter);
+        MakeSplatter(originPos, .67f);
     }
 
 
@@ -76,7 +75,6 @@ public partial class BigEnemy : Enemy
     {
         base.Kill(originPos);
         QueueFree();
-        Splatter1 splatter = GibManager.getSplatter(this.Position, originPos.AngleToPoint(Position), Vector2.One * 1.5f);
-        AddSibling(splatter);
+        MakeSplatter(originPos, 1.5f);
     }
 }

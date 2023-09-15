@@ -53,5 +53,5 @@ process_callback = 0
 wait_time = 0.4
 autostart = true
 
-[connection signal="body_entered" from="Area2D" to="." method="Hit"]
+[connection signal="area_entered" from="Area2D" to="." method="Hit"]
 [connection signal="timeout" from="DDayClock" to="." method="Eliminate"]

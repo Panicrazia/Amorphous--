@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://code/gibsSlimeAndCorpses/Splatter1.cs" id="1_jt5r8"]
 [ext_resource type="Texture2D" uid="uid://chtfwbl1hwtfg" path="res://resources/gibs/splatter4.png" id="2_gyxmk"]
 
-[node name="Splatter2" type="CanvasLayer"]
-layer = -1
+[node name="Splatter2" type="Node2D"]
+z_index = -1
 script = ExtResource("1_jt5r8")
 
 [node name="SplatterGraphic" type="Sprite2D" parent="."]
@@ -12,6 +12,11 @@ rotation = -0.574857
 texture = ExtResource("2_gyxmk")
 offset = Vector2(79, 42)
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-unique_name_in_owner = true
-color = Color(0.219608, 1, 0.0941176, 0.862745)
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 136
+monitoring = false
+monitorable = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
+polygon = PackedVector2Array(-36, -30, 3, -44, 19, -75, 114, -97, 115, -63, 221, -5, 168, 45, 136, 61, 74, 38, 25, 42, -29, 34, -44, 5)
